@@ -1,19 +1,14 @@
-import Layout from "@/components/Layout"
-import Cardlayout from "@/components/cardlayout"
-import NavigationLayout from "@/components/navigationLayout"
-
+// src/App.tsx
+import Layout from "@/components/MainLayout"
+import Cardlayout from "@/components/Cardlayout"
+import NavigationLayout from "@/components/NavigationLayout"
 
 function App() {
-
   return (
-    
     <Layout>
-      <NavigationLayout />
+      {/* <NavigationLayout /> */}
       <Cardlayout />
-      
     </Layout>
-
-    
   )
 }
 
