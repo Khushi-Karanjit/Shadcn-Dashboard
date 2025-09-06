@@ -1,14 +1,21 @@
-// src/App.tsx
 import Layout from "@/components/MainLayout"
-import Cardlayout from "@/components/Cardlayout"
-import NavigationLayout from "@/components/NavigationLayout"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import DefaultPage from "@/pages/DefaultPage"
+import CRMPage from "./pages/CRMPage"
+import FinancePage from "./pages/FinancePage"
 
 function App() {
   return (
-    <Layout>
-      {/* <NavigationLayout /> */}
-      <Cardlayout />
-    </Layout>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/default" element={<DefaultPage />} />
+          <Route path="/crm" element={<CRMPage />} />
+          <Route path="/finance" element={<FinancePage />} />
+        </Routes>
+      </Layout>
+    </Router>
+  
   )
 }
 

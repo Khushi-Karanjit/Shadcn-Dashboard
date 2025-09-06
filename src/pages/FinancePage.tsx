@@ -1,16 +1,13 @@
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/AppSidebar"
-import React from "react"
-import TopNav from "./NavigationLayout"
-import FinancialOverviewCard from "@/components/FinancialOverviewLayout"
-import Cardlayout from "./Cardlayout"
-import ExpenseSummary from "@/components/HalfpieChart"
-import CurrencyExchange from "./CurrencyCard"
+import { AppSidebar } from "@/components/AppSidebar";
+import Cardlayout from "@/components/Cardlayout";
+import CurrencyExchange from "@/components/CurrencyCard";
+import FinancialOverviewCard from "@/components/FinancialOverviewLayout";
+import ExpenseSummary from "@/components/HalfpieChart";
+import TopNav from "@/components/NavigationLayout";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function FinancePage() {
   return (
-    <SidebarProvider defaultOpen={false}>
-      <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full">
         <AppSidebar />
         <div className="flex-1 flex flex-col rounded-2xl border m-4 overflow-hidden">
           <header>
@@ -36,6 +33,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </main>
         </div>
       </div>
-    </SidebarProvider>
   )
 }

@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,169 +15,369 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
-
+  Command as CommandIcon,
   Search,
   Settings,
-  SunMoon,
-  Grid,
-  FileText,
-  Activity,
-  ShoppingCart,
+  Moon,
+  ChartBar,
+  Gauge,
+  Forklift,
+  ShoppingBag,
   GraduationCap,
-  Truck,
-  LogIn,
+  Bell,
+  User,
+  CreditCard,
+  LogOut,
+  LayoutDashboard,
 } from "lucide-react"
 import { SidebarTrigger } from "./ui/sidebar"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command"
 
 export default function TopNav() {
+  const [open, setOpen] = React.useState(false)
+
+  // keyboard shortcut: ⌘J / Ctrl+J
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "j" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setOpen((open) => !open)
+      }
+    }
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
+
   return (
     <div className="w-full border-b bg-background">
       <div className="flex h-16 items-center px-4">
-
         {/* Left - Sidebar Toggle */}
         <Button variant="ghost" size="icon" className="rounded-full">
           <SidebarTrigger className="h-5 w-5" />
         </Button>
 
-        {/* Search - triggers full overlay dialog */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              className="ml-4 flex-1 max-w-md justify-start rounded-full bg-muted/40 px-3 py-2 text-muted-foreground hover:bg-muted/60"
+        <div className="flex justify-between w-full">
+          <div className="flex items-center gap-2 ml-4">
+            {/* Search icon trigger */}
+            <Search
+              className="h-5 w-5 cursor-pointer"
+              onClick={() => setOpen(true)}
+            />
+
+            {/* Search text trigger */}
+            <span
+              className="text-sm text-muted-foreground cursor-pointer"
+              onClick={() => setOpen(true)}
             >
-              <Search className="mr-2 h-4 w-4" />
-              Search...
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl p-4">
-            <DialogHeader>
-              <DialogTitle>Search</DialogTitle>
-              <DialogDescription>
-                Search dashboards, users, and more
-              </DialogDescription>
-            </DialogHeader>
+              Search
+            </span>
 
-            {/* Input */}
-            <Input autoFocus placeholder="Search dashboards, users, and more..." className="w-full mt-2 mb-4" />
-
-            {/* Search results */}
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              
-              {/* Dashboards Section */}
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground mb-1">Dashboards</p>
-                <div className="space-y-1">
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <Grid className="h-4 w-4" />
-                    Default
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <FileText className="h-4 w-4" />
-                    CRM
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <Activity className="h-4 w-4" />
-                    Analytics
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <ShoppingCart className="h-4 w-4" />
-                    E-Commerce
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <GraduationCap className="h-4 w-4" />
-                    Academy
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <Truck className="h-4 w-4" />
-                    Logistics
-                  </Button>
-                </div>
-              </div>
-
-              {/* Authentication Section */}
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground mb-1">Authentication</p>
-                <div className="space-y-1">
-                  <Button variant="ghost" className="w-full justify-start gap-2">
-                    <LogIn className="h-4 w-4" />
-                    Login v1
-                  </Button>
-                </div>
-              </div>
+            {/* Shortcut badge */}
+            <div
+              onClick={() => setOpen(true)}
+              className="ml-auto hidden sm:inline-flex items-center gap-1 rounded bg-muted px-1.5 text-[10px] font-medium text-muted-foreground cursor-pointer"
+            >
+              <CommandIcon className="h-3 w-3" />
+              <span>J</span>
             </div>
-          </DialogContent>
-        </Dialog>
+          </div>
 
-        {/* Right Side */}
-        <NavigationMenu>
-          <NavigationMenuList className="flex items-center gap-2">
+          {/* Right Side */}
+          <NavigationMenu>
+            <NavigationMenuList className="flex items-center gap-2">
+              {/* Theme Toggle */}
+              <NavigationMenuItem>
+                <Button className="p-2 rounded-lg bg-black text-white hover:bg-gray-800">
+                  <Moon className="h-5 w-5" />
+                </Button>
+              </NavigationMenuItem>
 
-            {/* Theme Toggle */}
-            <NavigationMenuItem>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <SunMoon className="h-5 w-5" />
-              </Button>
-            </NavigationMenuItem>
+              {/* Layout Settings Dropdown */}
+<NavigationMenuItem>
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button className="p-2 rounded-lg bg-black text-white hover:bg-gray-800">
+        <Settings className="h-5 w-5" />
+      </Button>
+    </DropdownMenuTrigger>
 
-            {/* Settings Dropdown */}
-            <NavigationMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <Settings className=" h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel>Settings</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Account Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Preferences</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </NavigationMenuItem>
+    <DropdownMenuContent align="end" className="w-72 p-4 space-y-6">
+      {/* Header */}
+      <p className="font-semibold text-sm">Layout Settings</p>
+      <p className="text-xs text-muted-foreground">
+        Customize your dashboard layout preferences.
+      </p>
 
-            {/* Avatar Dropdown */}
-            <NavigationMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" className="border-none" variant="ghost">
-                    <Avatar className="h-8 w-8 rounded-md overflow-hidden">
-                <AvatarImage
-                  src="https://next-shadcn-admin-dashboard.vercel.app/avatars/arhamkhnz.png"
-                
-                />
-                <AvatarFallback>
-                  AK
-                </AvatarFallback>
-              </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </NavigationMenuItem>
+      {/* Preset */}
+<div>
+  <p className="text-xs font-semibold  mb-2 ">Preset</p>
+  <Select>
+    <SelectTrigger className="h-8 text-xs ">
+      <SelectValue placeholder="Default" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="default">Default</SelectItem>
+      <SelectItem value="compact">Compact</SelectItem>
+    </SelectContent>
+  </Select>
+</div>
 
-          </NavigationMenuList>
-        </NavigationMenu>
+      {/* Mode */}
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">Mode</p>
+        <ToggleGroup type="single" className="flex w-full">
+          <ToggleGroupItem
+            value="light"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Light
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="dark"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Dark
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
+
+      {/* Sidebar Variant */}
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">
+          Sidebar Variant
+        </p>
+        <ToggleGroup type="single" className="flex w-full">
+          <ToggleGroupItem
+            value="inset"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Inset
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="sidebar"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Sidebar
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="floating"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Floating
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+
+      {/* Sidebar Collapsible */}
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">
+          Sidebar Collapsible
+        </p>
+        <ToggleGroup type="single" className="flex w-full">
+          <ToggleGroupItem
+            value="icon"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Icon
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="offcanvas"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            OffCanvas
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+
+      {/* Content Layout */}
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground mb-2">
+          Content Layout
+        </p>
+        <ToggleGroup type="single" className="flex w-full">
+          <ToggleGroupItem
+            value="centered"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Centered
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="fullwidth"
+            className="flex-1 rounded-none px-2 py-1 text-xs
+                       first:rounded-l-md last:rounded-r-md
+                       -ml-px first:ml-0
+                       hover:bg-muted/70
+                       data-[state=on]:bg-muted
+                       data-[state=on]:shadow-inner
+                       border border-input"
+          >
+            Full Width
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</NavigationMenuItem>
+
+
+
+              {/* Account Dropdown */}
+              <NavigationMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="icon" className="border-none" variant="ghost">
+                      <Avatar className="h-8 w-8 rounded-md overflow-hidden">
+                        <AvatarImage src="https://next-shadcn-admin-dashboard.vercel.app/avatars/arhamkhnz.png" />
+                        <AvatarFallback>AK</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel className="flex flex-col">
+                      <span className="font-medium">Arham Khan</span>
+                      <span className="text-xs text-muted-foreground">
+                        Administrator
+                      </span>
+                    </DropdownMenuLabel>
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" /> Account
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <CreditCard className="mr-2 h-4 w-4" /> Billing
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Bell className="mr-2 h-4 w-4" /> Notifications
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <LogOut className="mr-2 h-4 w-4" /> Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
+      </div>
+
+      {/* Search Command Dialog */}
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+
+          <CommandGroup heading="Dashboards">
+            <CommandItem>
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              Default
+            </CommandItem>
+            <CommandItem>
+              <ChartBar className="mr-2 h-4 w-4" />
+              CRM
+            </CommandItem>
+            <CommandItem>
+              <Gauge className="mr-2 h-4 w-4" />
+              Analytics
+            </CommandItem>
+            <CommandItem>
+              <ShoppingBag className="mr-2 h-4 w-4" />
+              E-Commerce
+            </CommandItem>
+            <CommandItem>
+              <GraduationCap className="mr-2 h-4 w-4" />
+              Academy
+            </CommandItem>
+            <CommandItem>
+              <Forklift className="mr-2 h-4 w-4" />
+              Logistics
+            </CommandItem>
+
+          </CommandGroup>
+
+          <CommandSeparator />
+
+          <CommandGroup heading="Authentication">
+            <CommandItem>
+              {/* <User className="mr-2 h-4 w-4" /> */}
+              Login V1
+            </CommandItem>
+            <CommandItem>
+              {/* <CreditCard className="mr-2 h-4 w-4" /> */}
+              Login V2
+            </CommandItem>
+            <CommandItem>
+              {/* <Settings className="mr-2 h-4 w-4" /> */}
+              Register V1
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </div>
   )
 }
